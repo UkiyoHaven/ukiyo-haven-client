@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import withAuth from '@/utils/withAuth';
 
 const socket = io('http://localhost:3000');
 
@@ -11,7 +12,7 @@ type Message = {
   createdAt: string;
 };
 
-export default function Discussions() {
+function Discussions() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [username, setUsername] = useState('');
@@ -74,3 +75,5 @@ export default function Discussions() {
     </div>
   );
 }
+
+export default withAuth(Discussions);
