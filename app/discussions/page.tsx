@@ -2,31 +2,42 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-// Connect to the Socket.IO server
-const socket = io('http://localhost:3000');  // Backend server URL
+const socket = io('http://localhost:3000');
+
+type Message = {
+  id: number;
+  user: string;
+  content: string;
+  createdAt: string;
+};
 
 export default function Discussions() {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<{ user: string, message: string }[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    // Listen for incoming messages from the server
-    socket.on('receiveMessage', (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
+    // Load previous messages when connected
+    socket.on('loadPreviousMessages', (previousMessages: Message[]) => {
+      setMessages(previousMessages);
+    });
+
+    // Listen for new messages from the server
+    socket.on('receiveMessage', (newMessage: Message) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
     return () => {
-      socket.off('receiveMessage');  // Clean up the listener on component unmount
+      socket.off('loadPreviousMessages');
+      socket.off('receiveMessage');
     };
   }, []);
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (message && username) {
-      // Send the message to the server
       socket.emit('sendMessage', { user: username, message });
-      setMessage('');  // Clear input field after sending
+      setMessage('');
     }
   };
 
@@ -40,13 +51,13 @@ export default function Discussions() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          className="border p-2 text-black"
+          className="border p-2"
         />
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your message..."
-          className="w-80 h-40 p-2 border text-black"
+          className="w-80 h-40 p-2 border"
         />
         <button type="submit" className="bg-calmBlue text-white py-2 px-4 rounded">Send Message</button>
       </form>
@@ -54,7 +65,8 @@ export default function Discussions() {
         <h2 className="text-2xl">Messages</h2>
         {messages.map((msg, index) => (
           <div key={index} className="mt-4 p-4 border rounded">
-            <p><strong>{msg.user}:</strong> {msg.message}</p>
+            <p><strong>{msg.user}:</strong> {msg.content}</p>
+            <small>{new Date(msg.createdAt).toLocaleDateString()}</small>
           </div>
         ))}
       </div>
