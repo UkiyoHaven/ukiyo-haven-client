@@ -19,6 +19,7 @@ export default function Discussions() {
   useEffect(() => {
     // Load previous messages when connected
     socket.on('loadPreviousMessages', (previousMessages: Message[]) => {
+      console.log('Previous messages received:', previousMessages);  // Log previous messages
       setMessages(previousMessages);
     });
 
