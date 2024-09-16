@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import api from '../../utils/api';
 import { useRouter } from 'next/navigation';
+import { AxiosError } from 'axios';
 
 export default function Register() {
   const [username, setUsername] = useState('');
@@ -16,7 +17,15 @@ export default function Register() {
       await api.post('/auth/register', { username, email, password });
       router.push('/login');  // Redirect to login after registration
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      if (err instanceof AxiosError) {
+        // Access the error response if it's an Axios error
+        console.error('Error during registration:', err.response?.data || err.message);
+        setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      } else {
+        // Handle any other type of error
+        console.error('Unexpected error:', err);
+        setError('An unexpected error occurred. Please try again.');
+      }
     }
   };
 
@@ -30,6 +39,7 @@ export default function Register() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
+          className="text-black"
         />
         <input
           type="email"
@@ -37,6 +47,7 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="text-black"
         />
         <input
           type="password"
@@ -44,6 +55,7 @@ export default function Register() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="text-black"
         />
         {error && <p className="text-red-500">{error}</p>}
         <button type="submit" className="bg-calmBlue text-white py-2 px-4 rounded">Register</button>
