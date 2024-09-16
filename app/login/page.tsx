@@ -30,6 +30,7 @@ export default function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="text-black"
         />
         <input
           type="password"
@@ -37,6 +38,7 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="text-black"
         />
         {error && <p className="text-red-500">{error}</p>}
         <button type="submit" className="bg-calmBlue text-white py-2 px-4 rounded">Login</button>
