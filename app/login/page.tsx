@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import api from '../../utils/api';
+import api from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';  // Import AxiosError for better error handling
 
