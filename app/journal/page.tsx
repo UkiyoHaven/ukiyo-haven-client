@@ -2,9 +2,14 @@
 import { useState, useEffect } from 'react';
 import api from '../../utils/api';
 
+type JournalEntry = {
+  entry: string;
+  createdAt: string;
+};
+
 export default function Journal() {
   const [entry, setEntry] = useState('');
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState<JournalEntry[]>([]);
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -23,7 +28,7 @@ export default function Journal() {
     await api.post('/journal', { entry }, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setEntry(''); // Reset input
+    setEntry('');  // Reset input
     const res = await api.get('/journal', {
       headers: { Authorization: `Bearer ${token}` },
     });
