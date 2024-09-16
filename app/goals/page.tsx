@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import api from '../../utils/api';
+import { AxiosError } from 'axios';
 
 type Goal = {
   id: number;
@@ -43,7 +44,7 @@ export default function Goals() {
           deadline: newGoal.deadline || undefined,
         },
         {
-          headers: { Authorization: `Bearer ${token}` }, // Make sure the token is included
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setNewGoal({ title: '', description: '', deadline: '' });
@@ -52,25 +53,38 @@ export default function Goals() {
       });
       setGoals(res.data);
     } catch (err) {
-      console.error('Error creating goal:', err.response?.data || err.message); // Log any error
+      if (err instanceof AxiosError) {
+        console.error('Error creating goal:', err.response?.data || err.message); // Handle Axios errors
+      } else {
+        console.error('Unexpected error:', err); // Handle unexpected errors
+      }
     }
   };
 
 
   const handleCompleteGoal = async (id: number) => {
     const token = localStorage.getItem('token');
-    await api.patch(
-      `/goals/${id}`,
-      { completed: true },
-      {
+    try {
+      await api.patch(
+        `/goals/${id}`,
+        { completed: true },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const res = await api.get('/goals', {
         headers: { Authorization: `Bearer ${token}` },
+      });
+      setGoals(res.data);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        console.error('Error completing goal:', err.response?.data || err.message); // Handle Axios errors
+      } else {
+        console.error('Unexpected error:', err); // Handle unexpected errors
       }
-    );
-    const res = await api.get('/goals', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setGoals(res.data);
+    }
   };
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
