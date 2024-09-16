@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
-import api from '../../utils/api';
+import api from '@/utils/api';
 import { AxiosError } from 'axios';
+import withAuth from '@/utils/withAuth';
 
 type Goal = {
   id: number;
@@ -12,7 +13,7 @@ type Goal = {
   deadline?: string;
 };
 
-export default function Goals() {
+ function Goals() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [newGoal, setNewGoal] = useState({ title: '', description: '', deadline: '' });
 
@@ -129,3 +130,5 @@ export default function Goals() {
     </div>
   );
 }
+
+export default withAuth(Goals);

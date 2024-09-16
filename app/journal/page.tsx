@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import api from '../../utils/api';
+import api from '@/utils/api';
+import withAuth from '@/utils/withAuth';
 
 type JournalEntry = {
   id: number;
@@ -8,7 +9,7 @@ type JournalEntry = {
   createdAt: string;
 };
 
-export default function Journal() {
+function Journal() {
   const [entry, setEntry] = useState('');
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [editMode, setEditMode] = useState<number | null>(null);  // Track which entry is being edited
@@ -103,3 +104,5 @@ export default function Journal() {
     </div>
   );
 }
+
+export default withAuth(Journal);
