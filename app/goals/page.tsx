@@ -29,23 +29,33 @@ export default function Goals() {
   const handleCreateGoal = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    await api.post(
-      '/goals',
-      {
-        title: newGoal.title,
-        description: newGoal.description,
-        deadline: newGoal.deadline || undefined,
-      },
-      {
+    if (!token) {
+      console.error('Token not found in local storage');
+      return;
+    }
+
+    try {
+      await api.post(
+        '/goals',
+        {
+          title: newGoal.title,
+          description: newGoal.description,
+          deadline: newGoal.deadline || undefined,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }, // Make sure the token is included
+        }
+      );
+      setNewGoal({ title: '', description: '', deadline: '' });
+      const res = await api.get('/goals', {
         headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    setNewGoal({ title: '', description: '', deadline: '' });
-    const res = await api.get('/goals', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setGoals(res.data);
+      });
+      setGoals(res.data);
+    } catch (err) {
+      console.error('Error creating goal:', err.response?.data || err.message); // Log any error
+    }
   };
+
 
   const handleCompleteGoal = async (id: number) => {
     const token = localStorage.getItem('token');
