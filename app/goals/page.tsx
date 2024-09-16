@@ -72,19 +72,19 @@ export default function Goals() {
           value={newGoal.title}
           onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
           required
-          className="border p-2"
+          className="border p-2 text-black"
         />
         <textarea
           placeholder="Description"
           value={newGoal.description}
           onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
-          className="border p-2"
+          className="border p-2 text-black"
         />
         <input
           type="date"
           value={newGoal.deadline}
           onChange={(e) => setNewGoal({ ...newGoal, deadline: e.target.value })}
-          className="border p-2"
+          className="border p-2 text-black"
         />
         <button type="submit" className="bg-calmBlue text-white py-2 px-4 rounded">Create Goal</button>
       </form>
