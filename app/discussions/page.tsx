@@ -51,13 +51,13 @@ export default function Discussions() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          className="border p-2"
+          className="border p-2 text-black"
         />
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your message..."
-          className="w-80 h-40 p-2 border"
+          className="w-80 h-40 p-2 border text-black"
         />
         <button type="submit" className="bg-calmBlue text-white py-2 px-4 rounded">Send Message</button>
       </form>
