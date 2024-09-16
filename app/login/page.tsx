@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import api from '../../utils/api';
 import { useRouter } from 'next/navigation';
+import { AxiosError } from 'axios';  // Import AxiosError for better error handling
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,10 +14,22 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await api.post('/auth/login', { email, password });
-      localStorage.setItem('token', response.data.access_token);  // Save JWT token
-      router.push('/dashboard');  // Redirect to dashboard after login
+
+      // If the response contains the access token, save it and redirect
+      if (response.data?.access_token) {
+        localStorage.setItem('token', response.data.access_token);  // Save JWT token
+        router.push('/dashboard');  // Redirect to dashboard after login
+      } else {
+        setError('Login failed. No token received.');
+      }
     } catch (err) {
-      setError('Invalid credentials. Please try again.');
+      if (err instanceof AxiosError && err.response?.status === 401) {
+        // If error is due to invalid credentials
+        setError('Invalid credentials. Please try again.');
+      } else {
+        // For any other type of error
+        setError('An unexpected error occurred. Please try again.');
+      }
     }
   };
 
