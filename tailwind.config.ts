@@ -13,6 +13,13 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        calmBlue: '#83aaff',  // Soft, calming blue
+        pastelPurple: '#c8a2ff',  // Light purple accent color
+        softGray: '#f5f5f5',  // Neutral background
+        lightText: '#dcdcdc',  // Light text color for contrast
+        dangerRed: '#ff6b6b',  // Soft red for danger or alerts
+      },
     },
   },
   plugins: [],
