@@ -3,6 +3,7 @@ import { useState } from 'react';
 import api from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
+import Link from 'next/link';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -66,6 +67,7 @@ export default function Register() {
                         />
                         {error && <p className="text-red-500">{error}</p>}
                         <button type="submit" className="p-3 bg-purple-600 rounded-md text-white text-center">Register</button>
+                        <Link href='/login' key='/login'>Already have an account? <span className='text-purple-600'>Login</span> instead</Link>
                     </form>
                 </div>
             </div>
