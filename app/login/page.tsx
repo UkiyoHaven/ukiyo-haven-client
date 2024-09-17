@@ -3,6 +3,7 @@ import { useState } from 'react';
 import api from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';  // Import AxiosError for better error handling
+import Link from 'next/link';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -63,6 +64,7 @@ export default function Login() {
                         <a href="#" className="text-purple-600 text-sm">Forgot your password?</a>
                         <button type="submit" className="p-3 bg-purple-600 rounded-md text-white text-center">Login</button>
                         {error && <p className="text-red-500">{error}</p>}
+                        <Link href='/register' key='/register'>Don't have an account? Feel free to <span className='text-purple-600'>SignUp</span></Link>
                     </form>
                 </div>
             </div>
