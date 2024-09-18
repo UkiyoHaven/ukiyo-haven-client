@@ -90,45 +90,36 @@ function Goals() {
     <>
       <NavBar />  {/* Add Navigation Bar */}
       <div className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-4xl text-calmBlue mb-8">Personal Growth Goals</h1>
-        <form onSubmit={handleCreateGoal} className="mt-4 flex flex-col items-center gap-4">
-          <input
-            type="text"
-            placeholder="Goal Title"
-            value={newGoal.title}
-            onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-            required
-            className="border p-3 rounded-md text-black w-80"
-          />
-          <textarea
-            placeholder="Description"
-            value={newGoal.description}
-            onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
-            className="border p-3 rounded-md text-black w-80"
-          />
-          <input
-            type="date"
-            value={newGoal.deadline}
-            onChange={(e) => setNewGoal({ ...newGoal, deadline: e.target.value })}
-            className="border p-3 rounded-md text-black w-80"
-          />
-          <button type="submit" className="bg-calmBlue text-white py-2 px-4 rounded">Create Goal</button>
-        </form>
-
-        <div className="mt-10 w-80">
-          <h2 className="text-2xl">Your Goals</h2>
-          {goals.map((goal) => (
-            <div key={goal.id} className="mt-4 p-4 border rounded">
-              <p><strong>{goal.title}</strong></p>
-              <p>{goal.description}</p>
-              {goal.deadline && <small>Deadline: {new Date(goal.deadline).toLocaleDateString()}</small>}
-              <button onClick={() => handleCompleteGoal(goal.id)} disabled={goal.completed} className="mt-2 bg-green-500 text-white py-2 px-4 rounded">
-                {goal.completed ? 'Completed' : 'Mark as Completed'}
-              </button>
-            </div>
-          ))}
+    <h1 className="text-4xl mb-8">Personal Growth Goals</h1>
+    <form className="flex flex-col items-center gap-4">
+      <input
+        type="text"
+        placeholder="Goal Title"
+        className="w-80 p-3 border rounded bg-gray-900 text-gray-300"
+      />
+      <textarea
+        placeholder="Description"
+        className="w-80 h-32 p-3 border rounded bg-gray-900 text-gray-300"
+      />
+      <input
+        type="date"
+        className="w-80 p-3 border rounded bg-gray-900 text-gray-300"
+      />
+      <button className="mt-6 bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition">
+        Create Goal
+      </button>
+    </form>
+    <div className="mt-10 w-80">
+      <h2 className="text-2xl">Your Goals</h2>
+      {goals.map((goal, index) => (
+        <div key={index} className="mt-4 p-4 bg-gray-800 rounded shadow-md">
+          <h3 className="font-semibold">{goal.title}</h3>
+          <p>{goal.description}</p>
+          <small>{new Date(goal.createdAt).toLocaleDateString()}</small>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
     </>
   );
 }
