@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import api from '@/utils/api';
 import withAuth from '@/utils/withAuth';
+import NavBar from '@/components/NavBar';
 
 type JournalEntry = {
   id: number;
@@ -12,8 +13,8 @@ type JournalEntry = {
 function Journal() {
   const [entry, setEntry] = useState('');
   const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [editMode, setEditMode] = useState<number | null>(null);  // Track which entry is being edited
-  const [editEntry, setEditEntry] = useState('');  // Track the edited entry
+  const [editMode, setEditMode] = useState<number | null>(null);
+  const [editEntry, setEditEntry] = useState('');
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -32,7 +33,7 @@ function Journal() {
     await api.post('/journal', { entry }, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setEntry('');  // Reset input
+    setEntry('');
     const res = await api.get('/journal', {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -44,11 +45,11 @@ function Journal() {
     await api.delete(`/journal/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setEntries(entries.filter(item => item.id !== id));  // Update UI after deletion
+    setEntries(entries.filter(item => item.id !== id));
   };
 
-  const handleEdit = async (id: number) => {
-    setEditMode(id);  // Enter edit mode for the selected journal entry
+  const handleEdit = (id: number) => {
+    setEditMode(id);
     const entryToEdit = entries.find(item => item.id === id);
     if (entryToEdit) setEditEntry(entryToEdit.entry);
   };
@@ -58,50 +59,53 @@ function Journal() {
     await api.patch(`/journal/${id}`, { entry: editEntry }, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setEditMode(null);  // Exit edit mode
+    setEditMode(null);
     const res = await api.get('/journal', {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setEntries(res.data);  // Refresh entries after update
+    setEntries(res.data);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-3xl">Daily Reflection Journal</h1>
-      <form onSubmit={handleSubmit} className="mt-4 flex flex-col items-center">
-        <textarea
-          value={entry}
-          onChange={(e) => setEntry(e.target.value)}
-          placeholder="Write your daily reflection..."
-          className="w-80 h-40 p-2 border text-black"
-        />
-        <button type="submit" className="mt-4 bg-calmBlue text-white py-2 px-4 rounded">Save Entry</button>
-      </form>
-      <div className="mt-10 w-80">
-        <h2 className="text-2xl">Your Journal Entries</h2>
-        {entries.map((item, index) => (
-          <div key={index} className="mt-4 p-4 border rounded">
-            {editMode === item.id ? (
-              <>
-                <textarea
-                  value={editEntry}
-                  onChange={(e) => setEditEntry(e.target.value)}
-                  className="w-80 h-40 p-2 border text-black"
-                />
-                <button onClick={() => handleUpdate(item.id)} className="mt-2 bg-green-500 text-white py-2 px-4 rounded">Update</button>
-              </>
-            ) : (
-              <>
-                <p>{item.entry}</p>
-                <small>{new Date(item.createdAt).toLocaleDateString()}</small>
-                <button onClick={() => handleEdit(item.id)} className="mt-2 bg-yellow-500 text-white py-2 px-4 rounded">Edit</button>
-                <button onClick={() => handleDelete(item.id)} className="ml-2 bg-red-500 text-white py-2 px-4 rounded">Delete</button>
-              </>
-            )}
-          </div>
-        ))}
+    <>
+      <NavBar />
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <h1 className="text-4xl text-calmBlue mb-8">Daily Reflection Journal</h1>
+        <form onSubmit={handleSubmit} className="mt-4 flex flex-col items-center gap-4">
+          <textarea
+            value={entry}
+            onChange={(e) => setEntry(e.target.value)}
+            placeholder="Write your daily reflection..."
+            className="w-80 h-40 p-3 border rounded-md text-black"
+          />
+          <button type="submit" className="bg-calmBlue text-white py-2 px-4 rounded">Save Entry</button>
+        </form>
+        <div className="mt-10 w-80">
+          <h2 className="text-2xl">Your Journal Entries</h2>
+          {entries.map((item) => (
+            <div key={item.id} className="mt-4 p-4 border rounded">
+              {editMode === item.id ? (
+                <>
+                  <textarea
+                    value={editEntry}
+                    onChange={(e) => setEditEntry(e.target.value)}
+                    className="w-80 h-40 p-3 border rounded-md text-black"
+                  />
+                  <button onClick={() => handleUpdate(item.id)} className="mt-2 bg-green-500 text-white py-2 px-4 rounded">Update</button>
+                </>
+              ) : (
+                <>
+                  <p>{item.entry}</p>
+                  <small>{new Date(item.createdAt).toLocaleDateString()}</small>
+                  <button onClick={() => handleEdit(item.id)} className="mt-2 bg-yellow-500 text-white py-2 px-4 rounded">Edit</button>
+                  <button onClick={() => handleDelete(item.id)} className="ml-2 bg-red-500 text-white py-2 px-4 rounded">Delete</button>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
