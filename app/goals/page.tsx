@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import api from '@/utils/api';
 import { AxiosError } from 'axios';
 import withAuth from '@/utils/withAuth';
-import NavBar from '@/components/NavBar'; // Import NavBar
+import NavBar from '@/components/NavBar';
 
 type Goal = {
   id: number;
@@ -30,7 +30,8 @@ function Goals() {
   }, []);
 
   const handleCreateGoal = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault();  // Prevent form from performing a GET request on submission
+
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('Token not found in local storage');
@@ -49,6 +50,7 @@ function Goals() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+
       setNewGoal({ title: '', description: '', deadline: '' });
       const res = await api.get('/goals', {
         headers: { Authorization: `Bearer ${token}` },
@@ -61,6 +63,14 @@ function Goals() {
         console.error('Unexpected error:', err);
       }
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewGoal((prevGoal) => ({
+      ...prevGoal,
+      [name]: value,
+    }));
   };
 
   const handleCompleteGoal = async (id: number) => {
@@ -88,38 +98,47 @@ function Goals() {
 
   return (
     <>
-      <NavBar />  {/* Add Navigation Bar */}
+      <NavBar />
       <div className="min-h-screen flex flex-col items-center justify-center">
-    <h1 className="text-4xl mb-8">Personal Growth Goals</h1>
-    <form className="flex flex-col items-center gap-4">
-      <input
-        type="text"
-        placeholder="Goal Title"
-        className="w-80 p-3 border rounded bg-gray-900 text-gray-300"
-      />
-      <textarea
-        placeholder="Description"
-        className="w-80 h-32 p-3 border rounded bg-gray-900 text-gray-300"
-      />
-      <input
-        type="date"
-        className="w-80 p-3 border rounded bg-gray-900 text-gray-300"
-      />
-      <button className="mt-6 bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition">
-        Create Goal
-      </button>
-    </form>
-    <div className="mt-10 w-80">
-      <h2 className="text-2xl">Your Goals</h2>
-      {goals.map((goal, index) => (
-        <div key={index} className="mt-4 p-4 bg-gray-800 rounded shadow-md">
-          <h3 className="font-semibold">{goal.title}</h3>
-          <p>{goal.description}</p>
-          <small>{new Date(goal.createdAt).toLocaleDateString()}</small>
+        <h1 className="text-4xl mb-8">Personal Growth Goals</h1>
+        <form className="flex flex-col items-center gap-4" onSubmit={handleCreateGoal}>
+          <input
+            type="text"
+            name="title"
+            value={newGoal.title}
+            onChange={handleInputChange}
+            placeholder="Goal Title"
+            className="w-80 p-3 border rounded bg-gray-900 text-gray-300"
+          />
+          <textarea
+            name="description"
+            value={newGoal.description}
+            onChange={handleInputChange}
+            placeholder="Description"
+            className="w-80 h-32 p-3 border rounded bg-gray-900 text-gray-300"
+          />
+          <input
+            type="date"
+            name="deadline"
+            value={newGoal.deadline}
+            onChange={handleInputChange}
+            className="w-80 p-3 border rounded bg-gray-900 text-gray-300"
+          />
+          <button type="submit" className="mt-6 bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition">
+            Create Goal
+          </button>
+        </form>
+        <div className="mt-10 w-80">
+          <h2 className="text-2xl">Your Goals</h2>
+          {goals.map((goal, index) => (
+            <div key={index} className="mt-4 p-4 bg-gray-800 rounded shadow-md">
+              <h3 className="font-semibold">{goal.title}</h3>
+              <p>{goal.description}</p>
+              <small>{new Date(goal.createdAt).toLocaleDateString()}</small>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
+      </div>
     </>
   );
 }
