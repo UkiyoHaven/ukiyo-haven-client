@@ -52,7 +52,7 @@ export default function Login() {
             className="w-full p-3 rounded-md border focus:outline-none focus:ring-2 focus:ring-calmBlue text-black"
           />
           <a href="#" className="text-calmBlue text-sm">Forgot your password?</a>
-          {error && <p className="text-dangerRed">{error}</p>}
+          {error && <p className="text-[#ff6b6b]">{error}</p>}
           <button
             type="submit"
             className="w-full p-3 bg-calmBlue text-white rounded-md font-semibold hover:bg-blue-600"

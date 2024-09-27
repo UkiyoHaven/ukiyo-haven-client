@@ -57,7 +57,7 @@ export default function Register() {
             required
             className="w-full p-3 rounded-md border focus:outline-none focus:ring-2 focus:ring-calmBlue text-black"
           />
-          {error && <p className="text-dangerRed">{error}</p>}
+          {error && <p className="text-[#ff6b6b]">{error}</p>}
           <button
             type="submit"
             className="w-full p-3 bg-calmBlue text-white rounded-md font-semibold hover:bg-blue-600"
