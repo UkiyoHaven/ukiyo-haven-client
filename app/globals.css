@@ -6,11 +6,6 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --button-bg-color: #2E4E78;
-  --button-hover-bg-color: #A2CFFF;
-  --card-bg-color: #222;
-  --navbar-bg-color: #2E4E78;
-  --heading-color: #A2CFFF;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,12 +13,10 @@
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
-    --card-bg-color: #333;
   }
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -33,84 +26,62 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-h1, h2 {
-  color: var(--heading-color);
-}
-
-/* Navbar */
-.navbar {
-  background-color: var(--navbar-bg-color);
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.navbar a {
-  color: white;
-  font-size: 1.1rem;
-  margin-right: 20px;
-  transition: color 0.3s ease;
-}
-
-.navbar a:hover {
-  color: #FFD700;
-  text-decoration: underline;
-}
-
-/* Forms */
-input,
-textarea {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  width: 80%;
-  color: #e4e4e4;
-}
-
-textarea {
-  resize: none;
-  min-height: 150px;
-}
-
-/* Buttons */
-button {
-  background-color: var(--button-bg-color);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: var(--button-hover-bg-color);
-}
-
-/* Card Entries */
-.card {
-  background: var(--card-bg-color);
-  margin-top: 15px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
-
-/* Headings */
-h1 {
-  font-size: 3rem;
-  text-align: center;
-}
-
-h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-/* Tailwind Utility Layer */
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Global Styling */
+body {
+    background-color: var(--background-start-rgb);
+    color: var(--foreground-rgb);
+    font-family: 'Inter', sans-serif;
   }
-}
+
+  /* Chat Bubbles */
+  .bg-blue-600 {
+    background-color: #3b82f6;
+  }
+
+  .bg-gray-300 {
+    background-color: #d1d5db;
+  }
+
+  .bg-gray-800 {
+    background-color: #1f2937;
+  }
+
+  /* Input and Button Styling */
+  input, textarea {
+    background-color: #f3f4f6;
+    color: #111827;
+    border: none;
+    outline: none;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  button {
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #1d4ed8;
+  }
+
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    input, textarea {
+      background-color: #374151;
+      color: #f3f4f6;
+    }
+
+    button {
+      background-color: #2563eb;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+  }

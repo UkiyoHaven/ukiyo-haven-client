@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function NavBar() {
   return (
-    <nav className="bg-calmBlue text-white w-full py-4 shadow-md">
+    <nav className="bg-[#83aaff] text-white w-full py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
         <h1 className="text-3xl font-bold">
           Ukiyo Haven
