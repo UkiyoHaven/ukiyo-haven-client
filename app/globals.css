@@ -25,3 +25,63 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* Global Styling */
+body {
+    background-color: var(--background-start-rgb);
+    color: var(--foreground-rgb);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Chat Bubbles */
+  .bg-blue-600 {
+    background-color: #3b82f6;
+  }
+
+  .bg-gray-300 {
+    background-color: #d1d5db;
+  }
+
+  .bg-gray-800 {
+    background-color: #1f2937;
+  }
+
+  /* Input and Button Styling */
+  input, textarea {
+    background-color: #f3f4f6;
+    color: #111827;
+    border: none;
+    outline: none;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  button {
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #1d4ed8;
+  }
+
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    input, textarea {
+      background-color: #374151;
+      color: #f3f4f6;
+    }
+
+    button {
+      background-color: #2563eb;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+  }
